@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker container logs snapshotter
+docker container logs powerloom_snapshotter-lite_1
