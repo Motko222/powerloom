@@ -17,6 +17,8 @@ if [ "$docker_status" -ne "running" ]
 then 
   status="error"
   note="not running"
+else
+  status="ok"
 fi
 
 echo "updated='$(date +'%y-%m-%d %H:%M')'"
