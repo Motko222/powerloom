@@ -12,6 +12,8 @@ fi
 
 docker_status=$(docker inspect powerloom_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom | awk '{print $1}')
+type="snapshotter lite"
+network="testnet"
 
 if [ "$docker_status" -ne "running" ]
 then 
@@ -29,5 +31,5 @@ echo "note='$note'"
 echo "network='$network'" 
 echo "type=$type"
 echo "folder=$foldersize"
-echo "id=$ID"
+#echo "id=$ID"
 echo "docker_status=$docker_status"
