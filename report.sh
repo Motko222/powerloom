@@ -10,10 +10,10 @@ elif docker --help | grep -q "compose"
 then docker_compose="docker compose"
 fi
 
-pid=$(ps aux | grep snapshotter | grep -v grep | awk '{print $2}')
+docker_status=$(docker inspect powerloom_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom | awk '{print $1}')
 
-if [ -z $pid ]
+if [ "$docker_status" -ne "running" ]
 then 
   status="error"
   note="not running"
@@ -28,3 +28,4 @@ echo "network='$network'"
 echo "type=$type"
 echo "folder=$foldersize"
 echo "id=$ID"
+echo "docker_status=$docker_status"
