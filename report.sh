@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ~/scripts/powerloom/config/env
-cd ~/powerloom
+cd ~/powerloom-testnet
 
 #docker compose safe
 if command -v docker-compose &>/dev/null
@@ -11,7 +11,7 @@ then docker_compose="docker compose"
 fi
 
 docker_status=$(docker inspect powerloom_snapshotter-lite_1 | jq -r .[].State.Status)
-foldersize=$(du -hs ~/powerloom | awk '{print $1}')
+foldersize=$(du -hs ~/powerloom-testnet | awk '{print $1}')
 type="snapshotter lite"
 network="testnet"
 
