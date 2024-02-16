@@ -1,4 +1,4 @@
 #!/bin/bash
 
-~/powerloom
+~/powerloom-testnet
 git pull
