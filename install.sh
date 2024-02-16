@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cd ~
-git clone -b simulation_mode https://github.com/PowerLoom/snapshotter-lite powerloom
-cd powerloom
+git clone https://github.com/PowerLoom/snapshotter-lite powerloom-testnet
+cd powerloom-testnet
 ./build.sh
