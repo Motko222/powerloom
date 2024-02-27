@@ -25,7 +25,7 @@ cat << EOF
   "id":$POWERLOOM_ID,
   "machine":"$MACHINE",
   "chain":"testnet",
-  "type":"snapshotter lite",
+  "type":"lite",
   "status":"$status",
   "note":"$note",
   "docker":"$docker_status",
