@@ -11,12 +11,12 @@ folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{prin
 docker_status=$(docker inspect powerloom_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-testnet | awk '{print $1}')
 
-if [ "$docker_status" -ne "running" ]
+if [ "$docker_status" = "running" ]
 then 
+  status="ok"
+else
   status="error"
   note="not running"
-else
-  status="ok"
 fi
 
 cat << EOF
