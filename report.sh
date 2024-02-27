@@ -1,8 +1,5 @@
 #!/bin/bash
 
-source ~/scripts/powerloom/config/env
-cd ~/powerloom-testnet
-
 #docker compose safe
 if command -v docker-compose &>/dev/null
 then docker_compose="docker-compose"
@@ -10,10 +7,9 @@ elif docker --help | grep -q "compose"
 then docker_compose="docker compose"
 fi
 
+folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
 docker_status=$(docker inspect powerloom_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-testnet | awk '{print $1}')
-type="snapshotter lite"
-network="testnet"
 
 if [ "$docker_status" -ne "running" ]
 then 
@@ -23,13 +19,17 @@ else
   status="ok"
 fi
 
-echo "updated='$(date +'%y-%m-%d %H:%M')'"
-#echo "version='$version'" 
-echo "process='$pid'" 
-echo "status=$status"
-echo "note='$note'" 
-echo "network='$network'" 
-echo "type=$type"
-echo "folder=$foldersize"
-#echo "id=$ID"
-echo "docker_status=$docker_status"
+cat << EOF
+{
+  "project":"$folder",
+  "id":$POWERLOOM_ID,
+  "machine":"$MACHINE",
+  "chain":"testnet",
+  "type":"snapshotter lite",
+  "status":"$status",
+  "note":"$note",
+  "docker":$docker_status,
+  "folder_size:$folder"
+  "updated":"$(date --utc +%FT%TZ)"
+}
+EOF
