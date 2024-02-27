@@ -28,7 +28,7 @@ cat << EOF
   "type":"snapshotter lite",
   "status":"$status",
   "note":"$note",
-  "docker":$docker_status,
+  "docker":"$docker_status",
   "folder_size:$folder"
   "updated":"$(date --utc +%FT%TZ)"
 }
