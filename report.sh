@@ -20,7 +20,7 @@ then
   status="ok"
 else
   status="error"
-  note="not running"
+  message="not running"
 fi
 
 cat << EOF
@@ -31,7 +31,7 @@ cat << EOF
   "chain":"$chain",
   "type":"lite",
   "status":"$status",
-  "note":"$note",
+  "message":"$message",
   "docker":"$docker_status",
   "folder_size":"$foldersize",
   "updated":"$(date --utc +%FT%TZ)"
