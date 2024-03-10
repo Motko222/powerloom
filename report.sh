@@ -28,7 +28,7 @@ fi
 cat << EOF
 {
   "project":"$folder",
-  "id":$id,
+  "id":"$id",
   "machine":"$MACHINE",
   "chain":"$chain",
   "type":"lite",
