@@ -16,6 +16,7 @@ id=powerloom-$POWERLOOM_ID
 chain=testnet
 url=https://snapshotter-dashboard.powerloom.network
 version=
+bucket=node
 
 if [ "$docker_status" = "running" ]
 then 
@@ -44,7 +45,7 @@ EOF
 if [ ! -z $INFLUX_HOST ]
 then
  curl --request POST \
- "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$POWERLOOM_BUCKET&precision=ns" \
+ "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$bucket&precision=ns" \
   --header "Authorization: Token $INFLUX_TOKEN" \
   --header "Content-Type: text/plain; charset=utf-8" \
   --header "Accept: application/json" \
