@@ -13,10 +13,12 @@ folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{prin
 docker_status=$(docker inspect powerloom-testnet_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-testnet | awk '{print $1}')
 id=$POWERLOOM_ID
-chain=testnet
+chain=testnet v2
 url=https://snapshotter-dashboard.powerloom.network
 version=
 bucket=node
+group=node
+owner=yovilo
 
 if [ "$docker_status" = "running" ]
 then 
@@ -50,6 +52,6 @@ then
   --header "Content-Type: text/plain; charset=utf-8" \
   --header "Accept: application/json" \
   --data-binary "
-    status,node=$id,machine=$MACHINE status=\"$status\",message=\"$message\",version=\"$version\",url=\"$url\",chain=\"$chain\" $(date +%s%N) 
+    status,node=$id,machine=$MACHINE,group=$group,owner=$owner status=\"$status\",message=\"$message\",version=\"$version\",url=\"$url\",chain=\"$chain\" $(date +%s%N) 
     "
 fi
