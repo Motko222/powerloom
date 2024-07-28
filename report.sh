@@ -12,7 +12,7 @@ source ~/.bash_profile
 folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
 docker_status=$(docker inspect powerloom-testnet_snapshotter-lite_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-testnet | awk '{print $1}')
-id=powerloom-$POWERLOOM_ID
+id=$POWERLOOM_ID
 chain=testnet
 url=https://snapshotter-dashboard.powerloom.network
 version=
