@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nano ~/powerloom/.env
+nano ~/powerloom-pre-mainnet-simulation/.env
