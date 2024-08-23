@@ -7,5 +7,5 @@ elif docker --help | grep -q "compose"; then
     docker_compose="docker compose"
 fi
 
-cd ~/powerloom-pre-mainnet-simulation
+cd powerloom-pre-mainnet
 $docker_compose down
