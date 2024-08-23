@@ -10,7 +10,7 @@ fi
 source ~/.bash_profile
 
 folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
-docker_status=$(docker inspect powerloom-pre-mainnet_-snapshotter-lite-v2_1 | jq -r .[].State.Status)
+docker_status=$(docker inspect powerloom-pre-mainnet_snapshotter-lite-v2_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-pre-mainnet | awk '{print $1}')
 id=$POWERLOOM_ID
 network=mainnet
