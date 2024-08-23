@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd powerloom-pre-mainnet
+cd ~/powerloom-pre-mainnet
 ./build.sh
