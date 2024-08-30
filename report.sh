@@ -19,7 +19,7 @@ url=https://snapshotter-dashboard.powerloom.network
 version=
 bucket=node
 group=node
-owner=yovilo
+owner=$OWNER
 
 if [ "$docker_status" = "running" ]
 then 
