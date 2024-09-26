@@ -17,14 +17,9 @@ source ~/.bash_profile
 folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
 docker_status=$(docker inspect powerloom-pre-mainnet_snapshotter-lite-v2_1 | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-pre-mainnet | awk '{print $1}')
-id=$POWERLOOM_ID
 network=mainnet
 chain="pre-mainnet"
 url=https://snapshotter-dashboard.powerloom.network
-version=
-bucket=node
-group=node
-owner=$OWNER
 
 if [ "$docker_status" = "running" ]
 then 
@@ -41,7 +36,7 @@ cat >$json << EOF
   "tags": {
          "id":"$POWERLOOM_ID",
          "machine":"$MACHINE",
-         "grp":"storage",
+         "grp":"node",
          "owner":"$OWNER"
   },
   "fields": {
