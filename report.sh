@@ -1,5 +1,10 @@
 #!/bin/bash
 
+path=$(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd)
+folder=$(echo $path | awk -F/ '{print $NF}')
+json=~/logs/report-$folder
+source ~/.bash_profile
+
 #docker compose safe
 if command -v docker-compose &>/dev/null
 then docker_compose="docker-compose"
@@ -29,30 +34,23 @@ else
   message="not running"
 fi
 
-cat << EOF
+cat >$json << EOF
 {
-  "project":"$folder",
-  "id":"$id",
-  "machine":"$MACHINE",
-  "chain":"$chain",
-  "type":"lite",
-  "status":"$status",
-  "message":"$message",
-  "docker":"$docker_status",
-  "folder_size":"$foldersize",
-  "updated":"$(date --utc +%FT%TZ)"
+  "updated":"$(date --utc +%FT%TZ)",
+  "measurement":"report",
+  "tags": {
+         "id":"$folder",
+         "machine":"$MACHINE",
+         "grp":"storage",
+         "owner":"$OWNER"
+  },
+  "fields": {
+        "chain":"$chain",
+        "status":"$status",
+        "message":"$message",
+        "docker":"$docker_status",
+        "folder_size":"$foldersize"
+  }
 }
 EOF
-
-# send data to influxdb
-if [ ! -z $INFLUX_HOST ]
-then
- curl --request POST \
- "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$INFLUX_BUCKET&precision=ns" \
-  --header "Authorization: Token $INFLUX_TOKEN" \
-  --header "Content-Type: text/plain; charset=utf-8" \
-  --header "Accept: application/json" \
-  --data-binary "
-    report,id=$id,machine=$MACHINE,owner=$owner,grp=$group status=\"$status\",message=\"$message\",version=\"$version\",url=\"$url\",chain=\"$chain\",network=\"$network\",type=\"$type\" $(date +%s%N)
-    "
-fi
+cat $json
