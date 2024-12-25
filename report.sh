@@ -15,10 +15,9 @@ fi
 source ~/.bash_profile
 
 folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
-docker_status=$(docker inspect powerloom-pre-mainnet_snapshotter-lite-v2_1 | jq -r .[].State.Status)
+container=$(docker ps -a | grep "snapshotter-lite-v2" | awk '{print $NF}')
+docker_status=$(docker inspect $container | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-pre-mainnet | awk '{print $1}')
-network=mainnet
-chain="pre-mainnet"
 url=https://snapshotter-dashboard.powerloom.network
 
 if [ "$docker_status" = "running" ]
@@ -34,13 +33,14 @@ cat >$json << EOF
   "updated":"$(date --utc +%FT%TZ)",
   "measurement":"report",
   "tags": {
-         "id":"$POWERLOOM_ID",
+         "id":"$foler",
          "machine":"$MACHINE",
          "grp":"node",
          "owner":"$OWNER"
   },
   "fields": {
-        "chain":"$chain",
+        "chain":"pre-mainnet",
+        "netowork":"mainnet",
         "status":"$status",
         "message":"$message",
         "docker":"$docker_status",
@@ -48,4 +48,5 @@ cat >$json << EOF
   }
 }
 EOF
-cat $json
+
+cat $json | jq
