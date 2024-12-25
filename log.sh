@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker container logs -f powerloom-pre-mainnet_snapshotter-lite-v2_1 -n 100
+container=$(docker ps -a | grep "snapshotter-lite-v2" | awk '{print $NF}')
+
+docker container logs -f $container  -n 100
