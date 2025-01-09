@@ -39,8 +39,8 @@ cat >$json << EOF
          "owner":"$OWNER"
   },
   "fields": {
-        "chain":"pre-mainnet",
-        "netowork":"mainnet",
+        "chain":"mainnet",
+        "network":"mainnet",
         "status":"$status",
         "message":"$message",
         "docker":"$docker_status",
