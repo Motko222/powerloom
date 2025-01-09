@@ -16,6 +16,8 @@ source ~/.bash_profile
 
 folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
 container=$(docker ps -a | grep "snapshotter-lite-v2" | awk '{print $NF}')
+market=$(echo $container | cut -d "-" -f 6)
+token_id=$(echo $container | cut -d "-" -f 4)
 docker_status=$(docker inspect $container | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-pre-mainnet | awk '{print $1}')
 url=https://snapshotter-dashboard.powerloom.network
@@ -44,6 +46,8 @@ cat >$json << EOF
         "status":"$status",
         "message":"$message",
         "docker":"$docker_status",
+        "market":"$marker",
+        "token_id":"$token_id",
         "folder_size":"$foldersize"
   }
 }
