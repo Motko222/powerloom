@@ -25,6 +25,7 @@ url=https://snapshotter-dashboard.powerloom.network
 if [ "$docker_status" = "running" ]
 then 
   status="ok"
+  message="market=$market"
 else
   status="error"
   message="not running"
@@ -46,7 +47,7 @@ cat >$json << EOF
         "status":"$status",
         "message":"$message",
         "docker":"$docker_status",
-        "market":"$marker",
+        "market":"$market",
         "token_id":"$token_id",
         "folder_size":"$foldersize"
   }
