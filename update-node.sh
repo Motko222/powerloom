@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd powerloom-mainnet
+cd ~/powerloom-mainnet
 
 # Pull latest changes
 git fetch
