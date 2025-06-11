@@ -48,14 +48,16 @@ cat >$json << EOF
         "network":"powerloom",
         "status":"$status",
         "message":"$message",
+        "version":"$version",
+        "height":"$height",
+        "errors":"$errors",
         "m1":"$m1",
         "m2":"$m2",
         "m3":"$m3",
         "url":"$url",
         "url2":"$url2",
-        "url3":"$url3",
-        "height":"$height",
-        "errors":"$errors"
+        "url3":"$url3"
+
   }
 }
 EOF
