@@ -30,7 +30,7 @@ m1="last=$last"
 m2="id=$token_id market=$market"
 
 status="ok"
-[ errors -gt 100 ] && status="warning" && message="too many errors ($errors/h)"
+[ $errors -gt 100 ] && status="warning" && message="too many errors ($errors/h)"
 [ "$docker_status" != "running" ] && status="error" && message="docker not running ($docker_status)"
 
 cat >$json << EOF
