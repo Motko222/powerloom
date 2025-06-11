@@ -24,7 +24,7 @@ height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail
 version=$(docker container logs $container 2>&1 | grep -a "nodeVersion:" | tail -1 | awk -F "nodeVersion:" '{print $NF}' )
 last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | cut -d "|" -f 1 )
 errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
-url=https://snapshotter-dashboard.powerloom.network
+url="https://mint.powerloom.network"
 
 m1="last=$last"
 m2="id=$token_id market=$market"
