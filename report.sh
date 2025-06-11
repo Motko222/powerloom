@@ -2,8 +2,9 @@
 
 path=$(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd)
 folder=$(echo $path | awk -F/ '{print $NF}')
-json=~/logs/report-$folder
-source ~/.bash_profile
+json=/root/logs/report-$folder
+source /root/.bash_profile
+source $path/env
 
 #docker compose safe
 if command -v docker-compose &>/dev/null
@@ -13,13 +14,6 @@ if command -v docker-compose &>/dev/null
 fi
 
 source ~/.bash_profile
-
-cd $WORKDIR
-docker compose logs
-
-Current block: 537098
-nodeVersion: "v2.8.0"
-Successfully submitted snapshot to local collector
 
 container=$(docker ps -a | grep "snapshotter-lite-v2" | awk '{print $NF}')
 market=$(echo $container | cut -d "-" -f 6)
