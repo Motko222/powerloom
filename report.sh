@@ -7,49 +7,61 @@ source ~/.bash_profile
 
 #docker compose safe
 if command -v docker-compose &>/dev/null
-then docker_compose="docker-compose"
-elif docker --help | grep -q "compose"
-then docker_compose="docker compose"
+ then docker_compose="docker-compose"
+ elif docker --help | grep -q "compose"
+ then docker_compose="docker compose"
 fi
 
 source ~/.bash_profile
 
-folder=$(echo $(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd) | awk -F/ '{print $NF}')
+cd $WORKDIR
+docker compose logs
+
+Current block: 537098
+nodeVersion: "v2.8.0"
+Successfully submitted snapshot to local collector
+
 container=$(docker ps -a | grep "snapshotter-lite-v2" | awk '{print $NF}')
 market=$(echo $container | cut -d "-" -f 6)
 token_id=$(echo $container | cut -d "-" -f 4)
 docker_status=$(docker inspect $container | jq -r .[].State.Status)
 foldersize=$(du -hs ~/powerloom-pre-mainnet | awk '{print $1}')
+height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail -1 | awk -F "block: " '{print $NF}' | cut -d "|" -f 1 )
+version=$(docker container logs $container 2>&1 | grep -a "nodeVersion:" | tail -1 | awk -F "nodeVersion:" '{print $NF}' )
+last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | awk '{print $1 $2}' )
+errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
 url=https://snapshotter-dashboard.powerloom.network
 
-if [ "$docker_status" = "running" ]
-then 
-  status="ok"
-  message="market=$market"
-else
-  status="error"
-  message="not running"
-fi
+m1="last=$last"
+m2="id=$token_id market=$market"
+
+status="ok"
+[ errors -gt 100 ] && status="warning" && message="too many errors ($errors/h)"
+[ "$docker_status" != "running" ] && status="error" && message="docker not running ($docker_status)"
 
 cat >$json << EOF
 {
   "updated":"$(date --utc +%FT%TZ)",
   "measurement":"report",
   "tags": {
-         "id":"$folder",
+         "id":"$folder-$ID",
          "machine":"$MACHINE",
          "grp":"node",
          "owner":"$OWNER"
   },
   "fields": {
         "chain":"mainnet",
-        "network":"mainnet",
+        "network":"powerloom",
         "status":"$status",
         "message":"$message",
-        "docker":"$docker_status",
-        "market":"$market",
-        "token_id":"$token_id",
-        "folder_size":"$foldersize"
+        "m1":"$m1",
+        "m2":"$m2",
+        "m3":"$m3",
+        "url":"$url",
+        "url2":"$url2",
+        "url3":"$url3",
+        "height":"$height",
+        "errors":"$errors"
   }
 }
 EOF
