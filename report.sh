@@ -22,7 +22,7 @@ docker_status=$(docker inspect $container | jq -r .[].State.Status)
 foldersize=$(du -hs /root/powerloom-mainnet | awk '{print $1}')
 height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail -1 | awk -F "block: " '{print $NF}' | cut -d "|" -f 1 )
 version=$(docker container logs $container 2>&1 | grep -a "nodeVersion:" | tail -1 | awk -F "nodeVersion:" '{print $NF}' )
-last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | awk '{print $1 $2}' )
+last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | cut -d "|" -f 1 )
 errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
 url=https://snapshotter-dashboard.powerloom.network
 
