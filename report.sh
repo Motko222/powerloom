@@ -44,8 +44,8 @@ cat >$json << EOF
          "owner":"$OWNER"
   },
   "fields": {
-        "chain":"mainnet",
-        "network":"powerloom",
+        "chain":"powerloom",
+        "network":"mainnet",
         "status":"$status",
         "message":"$message",
         "version":"$version",
