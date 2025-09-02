@@ -5,6 +5,7 @@ folder=$(echo $path | awk -F/ '{print $NF}')
 json=/root/logs/report-$folder
 source /root/.bash_profile
 source $path/env
+source /root/powerloom-mainnet/$CFG_FILE
 
 #docker compose safe
 if command -v docker-compose &>/dev/null
@@ -24,7 +25,6 @@ height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail
 version=$(docker container logs $container 2>&1 | grep -a "nodeVersion:" | tail -1 | awk -F "nodeVersion: " '{print $NF}' | sed 's/\"//g' )
 last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | cut -d "|" -f 1 )
 errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
-url="https://mint.powerloom.network"
 
 m1="last=$last"
 m2="id=$token_id market=$market"
@@ -54,8 +54,8 @@ cat >$json << EOF
         "m1":"$m1",
         "m2":"$m2",
         "m3":"$m3",
-        "url":"$url",
-        "url2":"$url2",
+        "url":"https://mint.powerloom.network",
+        "url2":"$SOURCE_RPC_URL",
         "url3":"$url3"
 
   }
