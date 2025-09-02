@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nano ~/powerloom-mainnet/.env
+nano ~/powerloom-mainnet/$CFG_FILE
