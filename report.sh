@@ -24,13 +24,22 @@ foldersize=$(du -hs /root/powerloom-mainnet | awk '{print $1}')
 height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail -1 | awk -F "block: " '{print $NF}' | cut -d "|" -f 1 )
 version=$(docker container logs $container 2>&1 | grep -a "nodeVersion:" | tail -1 | awk -F "nodeVersion: " '{print $NF}' | sed 's/\"//g' )
 last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | cut -d "|" -f 1 )
+last=date -d "$(echo $last | tr -d '>')" +%s
 errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
 
-m1="last=$last"
-m2="id=$token_id market=$market"
+diff=$(( $(date +%s) - $(date -d "$last" +%s) ))
+
+if [ $diff -lt 3600 ]; then
+  last_ago="$(( diff / 60 )) minutes ago"
+elif [ $diff -lt 86400 ]; then
+  last_ago="$(( diff / 3600 )) hours ago"
+else
+  last_ago="$(( diff / 86400 )) days ago"
+fi
 
 status="ok"
 [ $errors -gt 100 ] && status="warning" && message="too many errors ($errors/h)"
+[ $diff -gt 86400 ] && status="warning" && message="no submission in 24h"
 [ "$docker_status" != "running" ] && status="error" && message="docker not running ($docker_status)"
 
 cat >$json << EOF
@@ -51,8 +60,8 @@ cat >$json << EOF
         "version":"$version",
         "height":"$height",
         "errors":"$errors",
-        "m1":"$m1",
-        "m2":"$m2",
+        "m1":"last=$last_ago",
+        "m2":"id=$token_id market=$market",
         "m3":"$m3",
         "url":"https://mint.powerloom.network",
         "url2":"$SOURCE_RPC_URL",
